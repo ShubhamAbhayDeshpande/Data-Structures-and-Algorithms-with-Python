@@ -122,6 +122,34 @@ class LinkedList:
         self.head = new_node
         self.length += 1
         return True
+    def LLPopfirst(self):
+        """
+        
+        This method will pop the first item from the linked list.
+        
+        Following edge cases should be considered
+        
+        1. When the linked list is empty. i.e both head and tail are None
+        2. When the linked list has only one item
+        
+        """
+        # Condition where the list is empty, there is no item to pop. 
+        if self.head == None or self.length == 0:
+            return None
+        
+        # Condition where there are one or more elements in the list
+        temp = self.head # Make a temporary variable pointing to the head 
+        self.head = self.head.next
+        temp.next = None # The pointer of the removed node should point to "None".
+        self.length -= 1
+
+        # Case where there is only one element in the linked list
+        if self.length == 0:
+            self.head = None
+            self.tail = None
+
+        return temp
+        
         
     def printLL(self):
         """
