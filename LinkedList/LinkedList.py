@@ -151,7 +151,7 @@ class LinkedList:
         return temp
         
         
-    def printLL(self):
+    def LLprint(self):
         """
         Method to print all elements in linked list
 
@@ -174,7 +174,7 @@ if __name__ == "__main__":
     print('Tail:', my_linked_list.tail.value)
     print('Length:', my_linked_list.length, '\n')
     print('Linked List:')
-    my_linked_list.printLL()
+    my_linked_list.LLprint()
 
 
     my_linked_list.LLPrepend(1)
@@ -186,4 +186,4 @@ if __name__ == "__main__":
     print('Tail:', my_linked_list.tail.value)
     print('Length:', my_linked_list.length, '\n')
     print('Linked List:')
-    my_linked_list.printLL()
+    my_linked_list.LLprint()
