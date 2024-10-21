@@ -260,8 +260,46 @@ class LinkedList:
         self.length += 1
 
         return True
+    
+    def LLRemove(self, index):
+            if index < 0 or index >= self.length:
+                return None
+                
+            if index == 0:
+                return self.LLPopfirst()
+                
+            if index == self.length-1:
+                return self.LLPop()
+                
+            prev = self.LLGet(index-1)
+            # temp = prev.next
+            temp = self.LLGet(index)
+            
+            prev.next = temp.next
+            temp.next = None
+            self.length-=1 
+            
+            return temp
+    
+    def LLReverse(self):
+        # Changing the head and tail of LL
+        temp = self.head
+        self.head = self.tail
+        self.tail = temp
+        
+        # Changing the order of pointers in LL
+        
+        before = None
+        after = temp.next
+        
+        for _ in range (self.length):
+            after = temp.next
+            temp.next = before
+            before = temp
+            temp = after
 
-    def LLprint(self):
+
+    def LLPrint(self):
         """
         Method to print all elements in linked list
 
@@ -276,22 +314,14 @@ class LinkedList:
 if __name__ == "__main__":
 
     my_linked_list = LinkedList(1)
+    my_linked_list.LLAppend(2)
     my_linked_list.LLAppend(3)
+    my_linked_list.LLAppend(4)
+    my_linked_list.LLAppend(5)
 
-    print("LL before insert():")
-    my_linked_list.LLprint()
+    print('LL before reverse:')
+    my_linked_list.LLPrint()
 
-    my_linked_list.LLInsert(1, 2)
-
-    print("\nLL after insert(2) in middle:")
-    my_linked_list.LLprint()
-
-    my_linked_list.LLInsert(0, 0)
-
-    print("\nLL after insert(0) at beginning:")
-    my_linked_list.LLprint()
-
-    my_linked_list.LLInsert(4, 4)
-
-    print("\nLL after insert(4) at end:")
-    my_linked_list.LLprint()
+    my_linked_list.LLReverse()
+    print('LL after reverse:')
+    my_linked_list.LLPrint()
