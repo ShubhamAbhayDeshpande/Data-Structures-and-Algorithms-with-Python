@@ -52,6 +52,64 @@ class DoublyLinkedList:
         self.tail = new_node
         self.length+=1
         return True
+    
+    def pop(self):
+        """
+        Method to pop the last item of the doubly linked list. The working is similar to what happens in a linked 
+        list. 
+        
+        The edge cases for this are as follows:
+        1. There are no elemets in the list
+        2. There is only one element in the list
+        3. There are two or more elements in the list
+        
+        """
+        # Set a variable pointing towards tail
+        temp = self.tail
+
+        # Condition where there are no elements in the list
+        if self.head is None:
+            return None
+        
+        # Condition where there is only one item in the list
+        if self.length == 1:
+            self.head = None
+            self.tail = None  
+
+        # Condition where there are two or more elments in the list 
+        else:
+            self.tail = self.tail.prev
+            temp.prev = None
+            self.tail.next = None
+            self.length-=1
+
+        return temp.value
+    
+    def prepend(self, value):
+        """
+        This method will add one node at the beginning of the linked list
+        
+        The edge cases for this methods are as follows:
+        1. There are no elements in the list.
+        2. There are one or more elements in the list
+        
+        """
+        # Creating new node
+        new_node = Node(value)
+
+        # Condition where there are no elements in the list
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        
+        # Condition where there are one or more elements in the list
+        else:
+            new_node.next = self.head
+            self.head.prev = new_node
+            self.head = new_node
+
+        self.length+=1
+        return True
 
     def print_list(self):
         """
@@ -74,3 +132,15 @@ if __name__ == "__main__":
     my_doubly_linked_list.append(3)
     print("DLL after appending: ")
     my_doubly_linked_list.print_list()
+
+    # Test code for pop method
+    # Starting with two nodes
+    print(my_doubly_linked_list.pop())
+    # With only one node
+    print(my_doubly_linked_list.pop())    
+    # With no nodes
+    print(my_doubly_linked_list.pop())
+
+    # Test code for prepend method
+    print(my_doubly_linked_list.prepend(3))
+    print(my_doubly_linked_list.prepend(7))
