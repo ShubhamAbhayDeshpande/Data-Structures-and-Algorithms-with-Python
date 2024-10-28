@@ -114,6 +114,129 @@ class DoublyLinkedList:
 
         self.length += 1
         return True
+    
+    def pop_first(self):
+        """
+        This method will pop the first element from the doubly linked list and return it.
+        
+        The edge cases for this method are as follows: 
+        1. When the DLL has no elements
+        2. When the DLL has two or more elements
+        3. When the DLL has only one element
+        
+        """
+        # Case where the DLL has no elements
+        if self.head == None:
+            return None
+        
+        temp = self.head # Condition valid when the DLL has one or more elements
+        
+        # Case where the DLL has only one element
+        if self.length == 1:
+            self.head = None
+            self.tail = None
+
+        # Condition where the DLL has two or more elements
+        else:
+            self.head = self.head.next
+            temp.next = None
+            self.head.prev = None
+        
+        self.length -= 1
+        return temp
+    
+    def get(self, index):
+        """
+        This method will return the node present at the index given as an argument to the method. 
+        
+        There are two edge cases for this method:
+        1. Whent the index is less than 0.
+        2. When the index is greater than the length of the DLL
+
+        If we simply iterate over the DLL the time complexity is O(n). There is a more efficient way to do it. 
+        We will check if the index is less than the mid point of the list. If yes, we will iterate over from the 
+        head to the mid of the list. If index is greater than the mid of the list, we will iterate over backwards
+        from the tail of the list. This way the time complexity will be O(n)/2. 
+        
+        """
+        # Case where the index is invalid
+        if index < 0 or index >= self.length:
+            return None
+
+        # Case where the index is valid
+
+        # Case where the index is less than half the length of the DLL
+        if index < self.length/2:
+            temp = self.head        
+            for _ in range(index):
+                temp = temp.next
+        
+        # Case where the index is greater than half the length of DLL
+        else:
+            temp = self.tail
+            for _ in range(self.length-1, index, -1):
+                temp = temp.prev
+
+        return temp
+    
+    def set_value(self, index, value):
+        """
+        This method will get the node at the "index" and will change the value of the node to "value". 
+        
+        To get the correct node, "get()" method is used. If the "get()" method returns a node, "set_value()" 
+        method will return True. If "get()" method returns None, "set_value()" method will return False. 
+         
+        """
+        # Get the node at the 'index'
+        temp = self.get(index)
+
+        # If the 'temp' variable is None
+        if temp is None:
+            return False
+        else:
+            temp.value = value
+            return True
+        
+    def insert(self, index, value):
+        """
+        This method will insert a node of the 'value' at the given 'index'.
+        To insert a node at the beginning, 'prepend()' method will be used. To insert a node at the end 'append()'
+        method will be used. 
+         
+        The edge cases for this method are as follows:
+        1. When the index is either less than zero or greater than the length of the list.
+        
+        """
+        # Case: index is less than zero or greater than the length of the list
+        if index < 0 or index > self.length:
+            return False
+        # Case: index is 0
+        elif index == 0:
+            return self.prepend(value)
+        # Case: index is equal to length of the list
+        elif index == self.length:
+            return self.append(value)
+        # Case: index value in the list
+        else:
+            # Create a new node
+            new_node = Node(value)
+
+            # Get node before desired index
+            before = self.get(index-1)
+            after = before.next
+
+            # Assign the new node pointers to before and after
+            new_node.prev = before
+            new_node.next = after
+
+            # Assign the before and after node pointers to new_node
+            before.next = new_node
+            after.prev = new_node
+
+            self.length += 1
+
+            return True
+
 
     def print_list(self):
         """
@@ -129,22 +252,27 @@ class DoublyLinkedList:
 
 
 if __name__ == "__main__":
-    my_doubly_linked_list = DoublyLinkedList(7)
-    print("DLL before appending: ")
-    my_doubly_linked_list.print_list()
-
+    my_doubly_linked_list = DoublyLinkedList(1)
     my_doubly_linked_list.append(3)
-    print("DLL after appending: ")
+
+
+    print('DLL before insert():')
     my_doubly_linked_list.print_list()
 
-    # Test code for pop method
-    # Starting with two nodes
-    print(my_doubly_linked_list.pop())
-    # With only one node
-    print(my_doubly_linked_list.pop())
-    # With no nodes
-    print(my_doubly_linked_list.pop())
 
-    # Test code for prepend method
-    print(my_doubly_linked_list.prepend(3))
-    print(my_doubly_linked_list.prepend(7))
+    my_doubly_linked_list.insert(1,2)
+
+    print('\nDLL after insert(2) in middle:')
+    my_doubly_linked_list.print_list()
+
+
+    my_doubly_linked_list.insert(0,0)
+
+    print('\nDLL after insert(0) at beginning:')
+    my_doubly_linked_list.print_list()
+
+
+    my_doubly_linked_list.insert(4,4)
+
+    print('\nDLL after insert(4) at end:')
+    my_doubly_linked_list.print_list()
