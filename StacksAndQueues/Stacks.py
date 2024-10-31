@@ -79,6 +79,8 @@ class Stack:
         else:
             temp = self.top
             self.top = self.top.next
+            # need to reset value of temp.next to None
+            temp.next = None 
             self.height -= 1
             return temp
 
