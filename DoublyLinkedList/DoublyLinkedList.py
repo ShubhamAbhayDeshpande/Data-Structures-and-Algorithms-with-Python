@@ -87,7 +87,7 @@ class DoublyLinkedList:
             self.tail.next = None
             self.length -= 1
 
-        return temp.value
+        return temp
 
     def prepend(self, value):
         """
@@ -237,6 +237,32 @@ class DoublyLinkedList:
 
             return True
 
+    def remove(self, index):
+        """
+        This method removes the node from the DLL.
+
+        To remove the node at the beginning pop_first() method is used and to remove the node at the end, pop() method
+        is used.
+
+        To remove any node in between, it is first assigned to the 'temp' variable and later, pointers of the next
+        and the previous nodes are adjusted.
+
+        """
+        if index < 0 or index > self.length:
+            return None
+        elif index == 0:
+            return self.pop_first()
+        elif index == self.length - 1:
+            return self.pop()
+        else:
+            temp = self.get(index)
+            temp.next.prev = temp.prev
+            temp.prev.next = temp.next
+            temp.next = None
+            temp.prev = None
+            self.length -= 1
+            return temp
+
     def print_list(self):
         """
         Method for priting the contents of the doubly linked list
@@ -252,22 +278,25 @@ class DoublyLinkedList:
 
 if __name__ == "__main__":
     my_doubly_linked_list = DoublyLinkedList(1)
+    my_doubly_linked_list.append(2)
     my_doubly_linked_list.append(3)
+    my_doubly_linked_list.append(4)
+    my_doubly_linked_list.append(5)
 
-    print("DLL before insert():")
+    print("DLL before remove():")
     my_doubly_linked_list.print_list()
 
-    my_doubly_linked_list.insert(1, 2)
-
-    print("\nDLL after insert(2) in middle:")
+    print("\nRemoved node:")
+    print(my_doubly_linked_list.remove(2).value)
+    print("DLL after remove() in middle:")
     my_doubly_linked_list.print_list()
 
-    my_doubly_linked_list.insert(0, 0)
-
-    print("\nDLL after insert(0) at beginning:")
+    print("\nRemoved node:")
+    print(my_doubly_linked_list.remove(0).value)
+    print("DLL after remove() of first node:")
     my_doubly_linked_list.print_list()
 
-    my_doubly_linked_list.insert(4, 4)
-
-    print("\nDLL after insert(4) at end:")
+    print("\nRemoved node:")
+    print(my_doubly_linked_list.remove(2).value)
+    print("DLL after remove() of last node:")
     my_doubly_linked_list.print_list()
