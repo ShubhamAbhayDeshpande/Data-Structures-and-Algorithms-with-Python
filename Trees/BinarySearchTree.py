@@ -42,8 +42,10 @@ class BinarySearchTree:
         # Make a while loop to iterate over tree
         while True:
             # Case 2: If the value of the new node is same as the temp, return false, as repetition is not allowed.
-            if temp == new_node:
-                return False
+            if temp.value == new_node.value:
+                raise ValueError(
+                    "The value is already present in the BST. Repetition of value is not allowed."
+                )
 
             # If the value of the new node is less than the temp, either add the new node on the left or check if there are other
             # nodes present on the left side of temp.
