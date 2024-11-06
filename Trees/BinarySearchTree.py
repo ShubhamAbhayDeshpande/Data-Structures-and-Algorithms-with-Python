@@ -65,6 +65,39 @@ class BinarySearchTree:
                 else:
                     temp = temp.right
 
+    def contains(self, value):
+        """
+        This method will check if the 'value' is present in the tree. If the method return True, the
+        value is present in tree. If method return False, the value is not present in the tree.
+
+        The edge cases for this are as follows:
+
+        1. When the tree is empty.
+
+        """
+        # Case where the tree is empty
+        if self.root is None:
+            return False
+
+        # Case where the tree is not empty
+        # Create a variable 'temp' to point to the root
+        temp = self.root
+
+        # The loop will run until the temp value is turned to 'None'. Meaning the
+        # the 'value' is not present in the tree.
+        while temp is not None:
+            # If the value is less than the 'temp.value' search on the left side of the tree
+            if temp.value > value:
+                temp = temp.left
+            # If the value is greater than the 'temp.value' search on the right side of the tree
+            elif temp.value < value:
+                temp = temp.right
+            # If the value is same as temp.value, return True
+            else:
+                return True
+        # If the 'while' loop is exited, the value is not present in the tree. Return 'False'
+        return False
+
 
 if __name__ == "__main__":
     my_tree = BinarySearchTree()
@@ -74,3 +107,4 @@ if __name__ == "__main__":
     my_tree.insert(1)
     print("left: ", my_tree.root.left.value)
     print("right: ", my_tree.root.right.value)
+    print(my_tree.contains(2))
