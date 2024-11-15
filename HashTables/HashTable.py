@@ -29,10 +29,6 @@ class HashTable:
         should not be modified or used by external user. This is not a foolproof solution and a
         determined user can still access and modify the method.
 
-        The value of 'my_hash', actually depends on the last letter of the 'key'. But, it will be too complicated to
-        isolate only the last letter. Hence, we are using the for-loop to get the my_hash value. This also means that, two
-        words ending with same letter will have same hash values.
-
         """
         # Define the variable to store the hash address
         my_hash = 0
