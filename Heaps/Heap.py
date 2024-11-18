@@ -34,6 +34,9 @@ class Heap:
         """
         return 2 * index + 2
 
+    def _parent(self, index):
+        return (index - 1) // 2
+
     def _swap(self, index1, index2):
         """
         This third helper method will be used to swap the values of the two indices
