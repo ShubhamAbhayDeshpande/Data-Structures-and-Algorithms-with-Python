@@ -35,6 +35,10 @@ class Heap:
         return 2 * index + 2
 
     def _parent(self, index):
+        """
+        Helper method to find the parent of the node present at the given index.
+
+        """
         return (index - 1) // 2
 
     def _swap(self, index1, index2):
@@ -47,11 +51,36 @@ class Heap:
         self.heap[index2] = self.heap[index1] - self.heap[index2]
         self.heap[index1] = self.heap[index1] - self.heap[index2]
 
+    # Method to insert a new element in heap
+    def insert(self, value):
+        """
+        This method will insert the new 'value' in the heap and assign that value
+        correct position.
+
+        """
+        # Append the new value to the heap
+        self.heap.append(value)
+        # Assign the index of the new element to a variable called 'current'
+        current = len(self.heap) - 1
+
+        # Make a while loop to assign the new element correct position
+        # The while loop will run until the 'current' is not at the top of the list
+        # Or until the value of the element at index 'current' is no longer greater than its parent.
+
+        while current > 0 and self.heap[current] > self.heap[self._parent(current)]:
+            self._swap(current, self._parent(current))
+            current = self._parent(current)
+
 
 if __name__ == "__main__":
     my_heap = Heap()
-    my_heap.heap.append(5)
-    my_heap.heap.append(10)
+    my_heap.insert(99)
+    my_heap.insert(72)
+    my_heap.insert(61)
+    my_heap.insert(58)
+    print("Heap before inserting element:")
     print(my_heap.heap)
-    my_heap._swap(0, 1)
+    print("Heap after inserting the element:")
+    my_heap.insert(100)
+    my_heap.insert(75)
     print(my_heap.heap)
