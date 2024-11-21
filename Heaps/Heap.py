@@ -2,6 +2,9 @@
 This file contains implementation of heap along with some of the helper methods
 to find the left and right index of the node and to swap the node values. 
 
+The following implementation is for MaxHeap. For MinHeap a different class needs
+to be written.
+
 """
 
 
@@ -51,6 +54,40 @@ class Heap:
         self.heap[index2] = self.heap[index1] - self.heap[index2]
         self.heap[index1] = self.heap[index1] - self.heap[index2]
 
+    def _sink_down(self, index):
+        """
+        This helper method is specifically used for the remove() method in heap.
+
+        It is only used when the heap has two or more items and the top most item is removed.
+        The method written below is only useful for max heap remove method. For min heap remove,
+        please change the comparison signs in if-statements.
+
+        """
+        # Set index equal to new variable max_index
+        max_index = index
+
+        while True:
+            # Find the left and right indices of the index
+            left_index = self._left_child(index)
+            right_index = self._right_child(index)
+
+            # If the left child is greater than index and left index is less than length of the heap
+            # Assign max index to left index
+            if (
+                left_index < len(self.heap)
+                and self.heap[left_index] > self.heap[max_index]
+            ):
+                max_index = left_index
+            if (
+                right_index < len(self.heap)
+                and self.heap[right_index] > self.heap[max_index]
+            ):
+                max_index = right_index
+            if max_index != index:
+                self._swap(index, max_index)
+                index = max_index
+            return True
+
     # Method to insert a new element in heap
     def insert(self, value):
         """
@@ -71,16 +108,54 @@ class Heap:
             self._swap(current, self._parent(current))
             current = self._parent(current)
 
+    def remove(self):
+        """
+        This method will remove the top item of the heap. It doesn't matter if the heap
+        is min-heap or a max-heap.
+
+        There are three boundary conditions for this method:
+        1. When the heap has no items. Return None
+        2. When heap has only one item: return item at index 0
+        3. When heap has two or more items: Use "sink-down" method.
+
+        """
+        # When the heap is empty
+        if len(self.heap) == 0:
+            return None
+
+        # When the heap has only one item
+        if len(self.heap) == 1:
+            return self.heap.pop()
+
+        # When the heap has two or more items
+        max_val = self.heap[
+            0
+        ]  # just assign the max or min value to the variable. Return it later
+        # pop() method will by default pop the last value in the list.
+        # We assign the last value to the starting index of the list.
+        self.heap[0] = self.heap.pop()
+        self._sink_down(0)
+
+        # Return the max or the min value
+        return max_val
+
 
 if __name__ == "__main__":
-    my_heap = Heap()
-    my_heap.insert(99)
-    my_heap.insert(72)
-    my_heap.insert(61)
-    my_heap.insert(58)
-    print("Heap before inserting element:")
-    print(my_heap.heap)
-    print("Heap after inserting the element:")
-    my_heap.insert(100)
-    my_heap.insert(75)
-    print(my_heap.heap)
+    myheap = Heap()
+    myheap.insert(95)
+    myheap.insert(75)
+    myheap.insert(80)
+    myheap.insert(55)
+    myheap.insert(60)
+    myheap.insert(50)
+    myheap.insert(65)
+
+    print(myheap.heap)
+
+    myheap.remove()
+
+    print(myheap.heap)
+
+    myheap.remove()
+
+    print(myheap.heap)
