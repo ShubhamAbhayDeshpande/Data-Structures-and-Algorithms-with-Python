@@ -59,61 +59,114 @@ class rBinarySearchTree:
         """
         return self.__r_contains(self.root, value)
 
-    # Before we can find if the tree contains a certain node or not, we need to insert nodes in tree.
-    # Hence, the following method is written. It is a place holder for recursive insert.
-    # It will be deleted later.
-    def insert(self, value):
+    def __r_insert(self, current_node, value):
         """
-        This method will insert new values in the BST. Depending on the values of the root node.
-        There are two edge cases when using the insert method.
-        1. When the tree is empty: Insert the new node value as a root value and end the program.
-        2. When the new node value is already present in the tree: This is a repetition. This is not allowed in BST.
+        This is a recursive method which will be called when inserting a new value in tree.
+
+        The brake condition is when the value of the current node is "None". Then the actual Node with
+        value is created. This is then returned to the function call where it will be attached to either
+        left or the right pointer of the current_node
 
         """
-        # Create a new node
-        new_node = Node(value)
+        # The brake condition
+        if current_node is None:
+            return Node(value)
+        # Following are the two recursive calls when the value is either smaller or greater than
+        # current node value.
+        # When the value is less than the current node value
+        if value < current_node.value:
+            current_node.left = self.__r_insert(current_node.left, value)
+        if value > current_node.value:
+            current_node.right = self.__r_insert(current_node.right, value)
+        # When exiting recursive method call, a final value of the current node will be returned.
+        return current_node
 
-        # Case 1: if the tree is empty, i.e. root == none, make new node as root and return True
-        if self.root is None:
-            self.root = new_node
-            return True
+    def r_insert(self, value):
+        """
+        This method calls the __r_insert() method recursively.
 
-        # Assign temp variable to the root
-        temp = self.root
-
-        # Make a while loop to iterate over tree
-        while True:
-            # Case 2: If the value of the new node is same as the temp, return false, as repetition is not allowed.
-            if temp.value == new_node.value:
-                raise ValueError(
-                    "The value is already present in the BST. Repetition of value is not allowed."
-                )
-
-            # If the value of the new node is less than the temp, either add the new node on the left or check if there are other
-            # nodes present on the left side of temp.
-            if new_node.value < temp.value:
-                if temp.left is None:
-                    temp.left = new_node
-                    return True
-                else:
-                    temp = temp.left
-
-            # If the value of the new node is greater than the temp, either add the new node on the right side of the temp or check
-            # if other nodes are present on the left side of temp
-            if new_node.value > temp.value:
-                if temp.right is None:
-                    temp.right = new_node
-                    return True
-                else:
-                    temp = temp.right
+        There is only one edge case in this: When the tree is empty. In that case, we will assign the
+        root to the new node.
+        """
+        if self.root == None:
+            self.root = Node(value)
+        self.__r_insert(self.root, value)
 
 
 if __name__ == "__main__":
-    my_tree = rBinarySearchTree()
-    my_tree.insert(2)
-    print("Root: ", my_tree.root.value)
-    my_tree.insert(3)
-    my_tree.insert(1)
-    print("left: ", my_tree.root.left.value)
-    print("right: ", my_tree.root.right.value)
-    print(my_tree.r_contains(9))
+
+    def check(expect, actual, message):
+        print(message)
+        print("EXPECTED:", expect)
+        print("RETURNED:", actual)
+        print("PASS" if expect == actual else "FAIL", "\n")
+
+    print("\n----- Test: Insert into an empty tree -----\n")
+    bst = rBinarySearchTree()
+    print("Inserting value:", 5)
+    bst.r_insert(5)
+    check(5, bst.root.value, "Root value after inserting 5:")
+    check(None, bst.root.left, "Left child of root:")
+    check(None, bst.root.right, "Right child of root:")
+
+    print("\n----- Test: Insert values in ascending order -----\n")
+    bst = rBinarySearchTree()
+    values = [1, 2, 3, 4, 5]
+    for val in values:
+        print("Inserting value:", val)
+        bst.r_insert(val)
+
+    # Check tree structure
+    check(1, bst.root.value, "Root value:")
+    check(2, bst.root.right.value, "Right child of root:")
+    check(3, bst.root.right.right.value, "Right child of right child of root:")
+    check(
+        4,
+        bst.root.right.right.right.value,
+        "Right child's right child's right child of root:",
+    )
+    check(5, bst.root.right.right.right.right.value, "Fourth right child of root:")
+
+    print("\n----- Test: Insert values in descending order -----\n")
+    bst = rBinarySearchTree()
+    values = [5, 4, 3, 2, 1]
+    for val in values:
+        print("Inserting value:", val)
+        bst.r_insert(val)
+
+    # Check tree structure
+    check(5, bst.root.value, "Root value:")
+    check(4, bst.root.left.value, "Left child of root:")
+    check(3, bst.root.left.left.value, "Left child of left child of root:")
+    check(
+        2,
+        bst.root.left.left.left.value,
+        "Left child's left child's left child of root:",
+    )
+    check(1, bst.root.left.left.left.left.value, "Fourth left child of root:")
+
+    print("\n----- Test: Insert values in mixed order -----\n")
+    bst = rBinarySearchTree()
+    values = [3, 1, 4, 5, 2]
+    for val in values:
+        print("Inserting value:", val)
+        bst.r_insert(val)
+
+    # Check tree structure
+    check(3, bst.root.value, "Root value:")
+    check(1, bst.root.left.value, "Left child of root:")
+    check(2, bst.root.left.right.value, "Right child of left child of root:")
+    check(4, bst.root.right.value, "Right child of root:")
+    check(5, bst.root.right.right.value, "Right child of right child of root:")
+
+    print("\n----- Test: Insert duplicate values -----\n")
+    bst = rBinarySearchTree()
+    values = [3, 3, 3]
+    for val in values:
+        print("Inserting value:", val)
+        bst.r_insert(val)
+
+    # Check tree structure
+    check(3, bst.root.value, "Root value:")
+    check(None, bst.root.left, "Left child of root:")
+    check(None, bst.root.right, "Right child of root:")
