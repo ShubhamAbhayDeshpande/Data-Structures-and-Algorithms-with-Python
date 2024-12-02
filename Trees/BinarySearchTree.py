@@ -98,13 +98,71 @@ class BinarySearchTree:
         # If the 'while' loop is exited, the value is not present in the tree. Return 'False'
         return False
 
+    def BFS(self):
+        """
+        BFS stands for Breadth First Search.
+
+        It is a way of going through the binary search tree and add all the elements in a list.
+
+        This method will return a list containing all the elements in the BST.
+
+        """
+        # Assign the root to current node
+        current_node = self.root
+
+        # Make a temporary queue and a result
+        queue = []
+        result = []
+
+        # Append the queue with the current node at the beginning
+        queue.append(current_node)
+
+        # While the length of the queue is not zero
+        while len(queue) > 0:
+            # pop the node at zero position in queue
+            current_node = queue.pop(0)
+            # Append the value of the poped node to the result
+            result.append(current_node.value)
+            # If there is a left and right child to the current node, append those values in queue
+            if current_node.left is not None:
+                queue.append(current_node.left)
+            if current_node.right is not None:
+                queue.append(current_node.right)
+        # Return the 'result' list which contains all the node values.
+        return result
+
+    def dfs_pre_order(self):
+        """
+        This is a depth first search approach to finding all the values in a BST.
+        It is implemented using recursion.
+        """
+        # A list to store all the node values.
+        result = []
+
+        # A recursive function to collect all the node values.
+        def traverse(current_node):
+            """This is the recursive function which will be called in itself multiple times."""
+            result.append(current_node.value)
+            if current_node.left is not None:
+                traverse(current_node.left)
+            if current_node.right is not None:
+                traverse(current_node.right)
+
+        # Call the recursive function on the root node
+        traverse(self.root)
+
+        # return result
+        return result
+
 
 if __name__ == "__main__":
     my_tree = BinarySearchTree()
-    my_tree.insert(2)
-    print("Root: ", my_tree.root.value)
-    my_tree.insert(3)
-    my_tree.insert(1)
-    print("left: ", my_tree.root.left.value)
-    print("right: ", my_tree.root.right.value)
-    print(my_tree.contains(2))
+    my_tree.insert(47)
+    my_tree.insert(21)
+    my_tree.insert(76)
+    my_tree.insert(18)
+    my_tree.insert(27)
+    my_tree.insert(52)
+    my_tree.insert(82)
+
+    print(my_tree.dfs_pre_order())
