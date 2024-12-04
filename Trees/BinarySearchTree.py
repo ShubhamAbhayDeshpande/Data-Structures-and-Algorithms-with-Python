@@ -119,7 +119,7 @@ class BinarySearchTree:
 
         # While the length of the queue is not zero
         while len(queue) > 0:
-            # pop the node at zero position in queue
+            # pop the node at zero position in queue. This is very important. As without this, the "while" loop will never end.
             current_node = queue.pop(0)
             # Append the value of the poped node to the result
             result.append(current_node.value)
@@ -154,6 +154,63 @@ class BinarySearchTree:
         # return result
         return result
 
+    def dfs_post_order(self):
+        """
+        This method is used to traverse a BST using "post-order" method in which the values of the nodes
+        are added in the final result after all the child node values are alerady added in the list.
+
+        The function used for this is similar to the recursive 'traverse' used in the pre-order.
+
+        """
+        # Define an empty list to add the values of the nodes to the list.
+        result = []
+
+        # Define the recursive traverse function.
+        def traverse(current_node):
+            """
+            This is the recursive function which will actually add the values of the nodes to the result list
+            """
+            # Visit all the left nodes
+            if current_node.left is not None:
+                traverse(current_node.left)
+            # Visit all the right nodes
+            if current_node.right is not None:
+                traverse(current_node.right)
+            # When all the nodes are visited, add the values in the result list
+            result.append(current_node.value)
+
+        # Start the traverse function wiht the root node
+        traverse(self.root)
+
+        # Return the result
+        return result
+
+    def dfs_in_order(self):
+        """
+        This is the approach where all the elements of the list are written to the tree in ascending order.
+
+        The execution is done in a similar way where a recursive function is used.
+
+        """
+        # Define a list to store all values of the tree
+        results = []
+
+        # Define a recursive function
+        def traverse(current_node):
+            # Check if the left sub-tree for the node is empty
+            if current_node.left is not None:
+                traverse(current_node.left)
+            # Add the value of the current node to the result if there are no more left sub-trees
+            results.append(current_node.value)
+            # Find if all the right sub-trees of the parent node are None or not
+            if current_node.right is not None:
+                traverse(current_node.right)
+
+        # Call the function on the root node
+        traverse(self.root)
+        # Return the list with all the values in ascending order
+        return results
+
 
 if __name__ == "__main__":
     my_tree = BinarySearchTree()
@@ -165,4 +222,4 @@ if __name__ == "__main__":
     my_tree.insert(52)
     my_tree.insert(82)
 
-    print(my_tree.dfs_pre_order())
+    print(my_tree.dfs_in_order())
